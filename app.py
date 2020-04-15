@@ -1,3 +1,15 @@
+import streamlit as st
+
+from ipywidgets import interact, interactive, fixed, interact_manual
+# from IPython.core.display import display, HTML
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+import plotly.graph_objects as go
+import ipywidgets as widgets
+
 st.markdown(
 '''
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -13,17 +25,6 @@ st.markdown(
 ''', unsafe_allow_html=True
     )
 
-import streamlit as st
-
-from ipywidgets import interact, interactive, fixed, interact_manual
-# from IPython.core.display import display, HTML
-
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.express as px
-import plotly.graph_objects as go
-import ipywidgets as widgets
 
 death_df = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
 confirmed_df = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')

@@ -301,17 +301,17 @@ show_country_stats(country_name)
 st.write(to_show_overall)
 st.write(to_show_daily)
 
-st.markdown(
-    '''
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+# st.markdown(
+#     '''
+#     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <a href="https://www.instagram.com/desai_hetav/" class="fa fa-instagram" style="padding: 20px;
-  font-size: 30px;
-  width: 30px;
-  text-align: center;
-  text-decoration: none;
-  margin: 5px 2px;
-  color: black"></a>
-    ''',
-    unsafe_allow_html=True
-)
+#     <a href="https://www.instagram.com/desai_hetav/" class="fa fa-instagram" style="padding: 20px;
+#   font-size: 30px;
+#   width: 30px;
+#   text-align: center;
+#   text-decoration: none;
+#   margin: 5px 2px;
+#   color: black"></a>
+#     ''',
+#     unsafe_allow_html=True
+# )

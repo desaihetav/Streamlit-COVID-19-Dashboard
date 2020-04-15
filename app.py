@@ -64,7 +64,7 @@ st.markdown('''
   <h1 style="margin: auto; width: 100%;">COVID-19 Interactive Dashboard</h1>
   <h2></h2><p style="margin: auto; font-weight: bold; text-align: center; width: 100%;">Data Source: CSSE, John Hopkins University</p>
   <h2></h2><p style="margin: auto; font-weight: 400; text-align: center; width: 100%;">Last Updated: ''' + str(country_df['last_update'][0]) + '''</p>
-  <h2></h2><p style="margin: auto; font-weight: 400; text-align: center; width: 100%;">( Best viewed on Desktop. Landscape orientation preferred for Mobile. You may need to scroll graphs horizontally on Mobile. )</p>
+  <h2></h2><p style="margin: auto; font-weight: 400; text-align: center; width: 100%;">( Best viewed on Desktop. Use Landscape mode for Mobile View. )</p>
   <h2></h2><p style="margin: auto; font-weight: 400; text-align: center; width: 100%; color: #e73631;">Please wait for few seconds while the tables and graphs are loaded.<br><br>Please REFRESH the page if the graphs are not loaded in a few seconds.</p>
   <h2>______</h2><br><br><p style="margin: auto; font-weight: 500; text-align: center; width: 100%; font-size: 50px">World Stats</p>
 </div>
@@ -230,7 +230,7 @@ def plot_new_cases_of_country(Country):
             xaxis_title='Date',
             yaxis_title='No. of New Cases',
             margin=dict(l=20, r=20, t=40, b=20),
-            paper_bgcolor='#f5f5f5',
+            paper_bgcolor='#F6F6F7',
             plot_bgcolor='rgba(0,0,0,0)',
     );
     fig.update_yaxes(type="linear")
@@ -253,7 +253,6 @@ def get_country_recovered(country):
 sorted_on_country_df = country_df.sort_values('country', ascending= True)
 sorted_on_country_df.append(['WORLD'])
 sorted_on_country_df = sorted_on_country_df.sort_values('country', ascending= True)
-country_name = 'World'
 st.markdown(
     '''
     <div class='jumbotron text-center' style='background-color: #fff; padding:0px; margin:0px'>
@@ -269,7 +268,8 @@ def show_country_stats(country):
     country_recovered = get_country_recovered(country)
     st.markdown(
         '''
-        <div class="jumbotron text-center" style='padding: 0px'>
+        <h1></h1>
+    <div class="jumbotron text-center" style='padding: 0px; background-color: #fff'>
     <div class="row" style="background-color: #fff;width: 100%; margin: auto;">
         <div class="col-sm-4">
         <p style='text-align: center; background-color: #fff; font-weight: 400 ;color: #000'>Total Confirmed</p>
@@ -284,6 +284,7 @@ def show_country_stats(country):
         <p style='text-align: center; font-size: 35px; font-weight: bold; color: #70a82c'>''' + str(country_recovered) + '''</p>
         </div>
     </div>
+    <br><p style="margin: auto; font-weight: 400; font-size-25px; background-color #fff; text-align: center; width: 100%; color: #e73631;">( DRAG over graph to ZOOM IN and DOUBLE TAP on graph to ZOOM OUT )</p>
     </div>
         ''',
         unsafe_allow_html=True
@@ -292,10 +293,25 @@ def show_country_stats(country):
 st.title('')
 st.title('Select Country from Dropdown below')
 
-country_name = st.selectbox('', list_all_countries)
+country_name = st.selectbox('', list_all_countries, 71)
 to_show_overall = plot_cases_of_a_country(country_name)
 to_show_daily = plot_new_cases_of_country(country_name)
 show_country_stats(country_name)
 
 st.write(to_show_overall)
 st.write(to_show_daily)
+
+st.markdown(
+    '''
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <a href="https://www.instagram.com/desai_hetav/" class="fa fa-instagram" style="padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  color: black"></a>
+    ''',
+    unsafe_allow_html=True
+)

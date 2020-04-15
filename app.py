@@ -25,7 +25,6 @@ st.markdown(
 ''', unsafe_allow_html=True
     )
 
-
 death_df = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
 confirmed_df = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
 recovered_df = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
@@ -60,6 +59,15 @@ deaths_total = int(country_df['deaths'].sum())
 recovered_total = int(country_df['recovered'].sum())
 active_total = int(country_df['active'].sum())
 
+confirmed_today = int(confirmed_df[confirmed_df.columns[-1]].sum() - confirmed_df[confirmed_df.columns[-2]].sum())
+confirmed_sign = '+' if confirmed_today>=0 else '-'
+death_today = int(death_df[death_df.columns[-1]].sum() - death_df[death_df.columns[-2]].sum())
+death_sign = '+' if death_today>=0 else '-'
+recovered_today = int(recovered_df[recovered_df.columns[-1]].sum() - recovered_df[recovered_df.columns[-2]].sum())
+recovered_sign = '+' if recovered_today>=0 else '-'
+
+
+
 st.markdown(
     """<head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -88,14 +96,17 @@ st.markdown('''
   <div class="row" style="background-color: #fff;width: 100%; margin: auto;">
     <div class="col-sm-4">
       <p style='text-align: center; background-color: #fff; font-weight: 400 ;color: #000'>Total Confirmed</p>
+      <p style='text-align: center; font-size: 15px; color: #000'>[''' + str(confirmed_sign) + str(confirmed_today) + ''']</p>
       <p style='text-align: center; font-size: 35px; font-weight: bold; color: #000'>''' + str(confirmed_total) + '''</p>
     </div>
     <div class="col-sm-4" style='background-color: #fff; border-radius: 5px'>
       <p style='text-align: center; font-weight: 400 ; color: #000'>Total Deaths</p>
+      <p style='text-align: center; font-size: 15px; color: #e73631'>[''' + str(death_sign) + str(death_today) + ''']</p>
       <p style='text-align: center; font-size: 35px; font-weight: bold; color: #e73631'>''' + str(deaths_total) + '''</p>
     </div>
     <div class="col-sm-4">
       <p style='text-align: center; background-color: #fff; font-weight: 400 ;color: #000'>Total Recovered</p>
+      <p style='text-align: center; font-size: 15px; color: #70a82c'>[''' + str(recovered_sign) + str(recovered_today) + ''']</p>
       <p style='text-align: center; font-size: 35px; font-weight: bold; color: #70a82c'>''' + str(recovered_total) + '''</p>
     </div>
   </div>
@@ -252,19 +263,6 @@ def plot_new_cases_of_country(Country):
     fig.update_yaxes(type="linear")
     return fig
 
-def get_country_con(country):
-    curr_date_df = confirmed_df[confirmed_df['country'] == country]
-    curr_date = curr_date_df.columns[-1]
-    return curr_date_df[curr_date].values.sum()
-def get_country_death(country):
-    curr_date_df = death_df[death_df['country'] == country]
-    curr_date = curr_date_df.columns[-1]
-    return curr_date_df[curr_date].values.sum()
-def get_country_recovered(country):
-    curr_date_df = recovered_df[recovered_df['country'] == country]
-    curr_date = curr_date_df.columns[-1]
-    return curr_date_df[curr_date].values.sum()
-
 
 sorted_on_country_df = country_df.sort_values('country', ascending= True)
 sorted_on_country_df.append(['WORLD'])
@@ -272,6 +270,8 @@ sorted_on_country_df = sorted_on_country_df.sort_values('country', ascending= Tr
 st.markdown(
     '''
     <div class='jumbotron text-center' style='background-color: #fff; padding:0px; margin:0px'>
+    <br>
+    <br>
         <p style="margin: auto; font-weight: 500; text-align: center; width: 100%; font-size: 50px">Specific Country Stats</p>
     </div>
     ''',
@@ -279,9 +279,23 @@ st.markdown(
 )
 
 def show_country_stats(country):
-    country_confirmed = get_country_con(country)
-    country_deaths = get_country_death(country)
-    country_recovered = get_country_recovered(country)
+
+    country_confirmed_df = confirmed_df[confirmed_df['country'] == country]
+    country_death_df = death_df[death_df['country'] == country]
+    country_recovered_df = recovered_df[recovered_df['country'] == country]
+
+    country_confirmed = country_confirmed_df[country_confirmed_df.columns[-1]].sum()
+    country_death = country_death_df[country_death_df.columns[-1]].sum()
+    country_recovered = country_recovered_df[country_recovered_df.columns[-1]].sum()
+
+    country_confirmed_today = int(country_confirmed_df[country_confirmed_df.columns[-1]].sum()) - int(country_confirmed_df[country_confirmed_df.columns[-2]].sum())
+    country_death_today = int(country_death_df[country_death_df.columns[-1]].sum()) - int(country_death_df[country_death_df.columns[-2]].sum())
+    country_recovered_today = int(country_recovered_df[country_recovered_df.columns[-1]].sum()) - int(country_recovered_df[country_recovered_df.columns[-2]].sum())
+
+    country_confirmed_today_sign = '+' if country_confirmed_today>=0 else ''
+    country_death_today_sign = '+' if country_death_today>=0 else ''
+    country_recovered_today_sign = '+' if country_recovered_today else ''
+
     st.markdown(
         '''
         <h1></h1>
@@ -289,14 +303,17 @@ def show_country_stats(country):
     <div class="row" style="background-color: #fff;width: 100%; margin: auto;">
         <div class="col-sm-4">
         <p style='text-align: center; background-color: #fff; font-weight: 400 ;color: #000'>Total Confirmed</p>
+        <p style='text-align: center; font-size: 15px; color: #000'>[''' + str(country_confirmed_today_sign) + str(country_confirmed_today) + ''']</p>
         <p style='text-align: center; font-size: 35px; font-weight: bold; color: #000'>''' + str(country_confirmed) + '''</p>
         </div>
         <div class="col-sm-4" style='background-color: #fff; border-radius: 5px'>
         <p style='text-align: center; font-weight: 400 ; color: #000'>Total Deaths</p>
-        <p style='text-align: center; font-size: 35px; font-weight: bold; color: #e73631'>''' + str(country_deaths) + '''</p>
+        <p style='text-align: center; font-size: 15px; color: #e73631'>[''' + str(country_death_today_sign) + str(country_death_today) + ''']</p>
+        <p style='text-align: center; font-size: 35px; font-weight: bold; color: #e73631'>''' + str(country_death) + '''</p>
         </div>
         <div class="col-sm-4">
         <p style='text-align: center; background-color: #fff; font-weight: 400 ;color: #000'>Total Recovered</p>
+        <p style='text-align: center; font-size: 15px; color: #70a82c'>[''' + str(country_recovered_today_sign) + str(country_recovered_today) + ''']</p>
         <p style='text-align: center; font-size: 35px; font-weight: bold; color: #70a82c'>''' + str(country_recovered) + '''</p>
         </div>
     </div>
@@ -317,17 +334,19 @@ show_country_stats(country_name)
 st.write(to_show_overall)
 st.write(to_show_daily)
 
-# st.markdown(
-#     '''
-#     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+st.markdown(
+    '''
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-#     <a href="https://www.instagram.com/desai_hetav/" class="fa fa-instagram" style="padding: 20px;
-#   font-size: 30px;
-#   width: 30px;
-#   text-align: center;
-#   text-decoration: none;
-#   margin: 5px 2px;
-#   color: black"></a>
-#     ''',
-#     unsafe_allow_html=True
-# )
+<div class='jumbotron text-center footer' style='background-color: #fff;'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <p style='font-weight: 400'>______</p>
+            <p style='font-weight: 400'>Designed, Developed and Maintained by Hetav Desai</p>
+            <p>Contact <a href='mailto:hetav.desai20@gmail.com'>hetav.desai20@gmail.com</a> to report issues<p>
+        </div>
+    </div>
+<div>
+    ''',
+    unsafe_allow_html=True
+)

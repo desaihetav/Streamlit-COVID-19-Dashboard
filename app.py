@@ -1,3 +1,18 @@
+st.markdown(
+'''
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125965720-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-125965720-2');
+</script>
+
+''', unsafe_allow_html=True
+    )
+
 import streamlit as st
 
 from ipywidgets import interact, interactive, fixed, interact_manual

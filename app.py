@@ -1,14 +1,7 @@
 import streamlit as st
-
-from ipywidgets import interact, interactive, fixed, interact_manual
-# from IPython.core.display import display, HTML
-
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import plotly.express as px
 import plotly.graph_objects as go
-import ipywidgets as widgets
 
 st.markdown(
 '''
@@ -119,22 +112,18 @@ country_stats_df = country_df[['country', 'last_update','confirmed', 'deaths', '
 fig = go.FigureWidget( layout=go.Layout() )
 def highlight_col(x):
     red = 'color: #e73631'
-    grey = 'color: #000'
+    black = 'color: #000'
     green = 'color: #70a82c'
     df1 = pd.DataFrame('', index=x.index, columns=x.columns)
-    df1.iloc[:, 2] = grey
+    df1.iloc[:, 2] = black
     df1.iloc[:, 3] = red
     df1.iloc[:, 4] = green
-    
     return df1
 
 def show_latest_cases(n):
-    if n=='':
-        print("Enter valid number")
-    else:
-        n = int(n)
-        if n>0:
-            return country_stats_df.sort_values('confirmed', ascending= False).reset_index(drop=True).head(n).style.apply(highlight_col, axis=None).set_properties(**{'text-align': 'left', 'font-size': '15px'}).set_table_styles([dict(selector='th', props=[('text-align', 'right',), ('color', 'red',)])])
+    n = int(n)
+    if n>0:
+        return country_stats_df.sort_values('confirmed', ascending= False).reset_index(drop=True).head(n).style.apply(highlight_col, axis=None).set_properties(**{'text-align': 'left', 'font-size': '15px'})
 
 
 # n=10
@@ -186,12 +175,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-def plot_cases_of_a_country(Country):
-    country = Country
+def plot_cases_of_a_country(country):
     labels = ['Confirmed', 'Deaths', 'Recovered']
     colors = ['black', 'red', 'green']
-    mode_size = [6, 8, 8]
-    line_size = [4, 5, 5]
+    mode_size = [8, 8, 8]
+    line_size = [5, 5, 5]
     
     df_list = [confirmed_df, death_df, recovered_df]
     
@@ -199,12 +187,12 @@ def plot_cases_of_a_country(Country):
     
     for i, df in enumerate(df_list):
         if country == 'World' or country == 'world':
-            x_data = np.array(list(df.iloc[:, 20:].columns))
+            x_data = np.array(list(df.iloc[:, 4:].columns))
             y_data = np.sum(np.asarray(df.iloc[:,4:]),axis = 0)
             
         else:    
-            x_data = np.array(list(df.iloc[:, 20:].columns))
-            y_data = np.sum(np.asarray(df[df['country'] == country].iloc[:,20:]),axis = 0)
+            x_data = np.array(list(df.iloc[:, 4:].columns))
+            y_data = np.sum(np.asarray(df[df['country'] == country].iloc[:,4:]),axis = 0)
             
         fig.add_trace(go.Scatter(x=x_data, y=y_data, mode='lines+markers',
         name=labels[i],
@@ -262,10 +250,6 @@ def plot_new_cases_of_country(Country):
     fig.update_yaxes(type="linear")
     return fig
 
-
-sorted_on_country_df = country_df.sort_values('country', ascending= True)
-sorted_on_country_df.append(['WORLD'])
-sorted_on_country_df = sorted_on_country_df.sort_values('country', ascending= True)
 st.markdown(
     '''
     <div class='jumbotron text-center' style='background-color: #fff; padding:0px; margin:0px'>

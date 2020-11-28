@@ -309,7 +309,8 @@ def show_country_stats(country):
 st.title('')
 st.title('Select Country from Dropdown below')
 
-country_name = st.selectbox('', list_all_countries, 79)
+default_index = list_all_countries.index("India")
+country_name = st.selectbox('', list_all_countries, default_index)
 to_show_overall = plot_cases_of_a_country(country_name)
 to_show_daily = plot_new_cases_of_country(country_name)
 show_country_stats(country_name)

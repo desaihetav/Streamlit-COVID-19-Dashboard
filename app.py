@@ -414,9 +414,9 @@ def main():
     
     
     # Read Cipla data
-    result = read(stock_symbol_1, stock_info_1, document_id_1)
-    if result.exists:
-        print(result.to_dict())
+#     result = read(stock_symbol_1, stock_info_1, document_id_1)
+#     if result.exists:
+#         print(result.to_dict())
 
 if __name__ == '__main__':
     main()
